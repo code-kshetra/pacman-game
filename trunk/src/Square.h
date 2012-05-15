@@ -44,6 +44,7 @@ public:
 
 Square::Square(int t1)
 {
+	//LOG(__func__);
 	this->changed = false;
 
 	type1 = t1;
@@ -52,48 +53,57 @@ Square::Square(int t1)
 
 int Square::getType1()
 {
+	//LOG(__func__);
 	return type1;
 }
 
 void Square::setType1(int t1)
 {	
+	//LOG(__func__);
 	changed = true;
 	type1 = t1;
 }
 
 void Square::displayType1()
 {
+	//LOG(__func__);
 	displayType(type1);
 }
 
 int Square::getType2()
 {
+	//LOG(__func__);
 	return type2;
 }
 
 void Square::setType2(int t2)
 {
+	//LOG(__func__);
 	changed = true;
 	type2 = t2;
 }
 
 void Square::displayType2()
 {
+	//LOG(__func__);
 	displayType(type2);
 }
 
 bool Square::isChanged()
 {
+	//LOG(__func__);
 	return changed;
 }
 
 void Square::resetChanged()
 {
+	LOG(__func__);
 	changed = false;
 }
 
 void Square::toString()
 {
+	LOG(__func__);
 	cout << "TYPES = " << type1 << "\t" << type2 << endl;
 	cout << "Changed = " << changed << endl;
 }
@@ -101,6 +111,7 @@ void Square::toString()
 
 void Square::displayType(int type)
 {
+	//LOG(__func__);
 	switch(type)
 	{
 	case TYPE1_DOT: 
@@ -124,6 +135,7 @@ void Square::displayType(int type)
 	default:
 		cout << '?';
 	}
+	cout<<' '; //a space to look neat!
 }
 
 #endif
