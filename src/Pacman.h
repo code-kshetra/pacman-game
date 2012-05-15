@@ -11,6 +11,7 @@ private:
 	int direction;
 
 public:
+	Pacman(){}
 	Pacman(int x, int y, int dir);
 
 	//Algorithms to be implemented

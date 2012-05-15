@@ -17,7 +17,7 @@ int main()
 
 	Grid grid("pacman-screen.txt");
 
-	Pacman pacman(1,2, DIR_LEFT);
+/*	Pacman pacman(1,2, DIR_LEFT);
 	pacman.toString();
 
 	Ghost ghosts[4];
@@ -26,7 +26,7 @@ int main()
 	{
 		ghosts[i] = Ghost(i, i+1, DIR_UP);
 		ghosts[i].toString();
-	}
+	}*/
 
 	cin.get();
 }
