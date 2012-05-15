@@ -1,6 +1,7 @@
 #ifndef _GLOBALS_H
 #define _GLOBALS_H
 
+#include "headers.h"
 //To define the type of object stored at a certain square
 const int TYPE1_DOT = 1;
 const int TYPE1_POWERPOINT = 2;

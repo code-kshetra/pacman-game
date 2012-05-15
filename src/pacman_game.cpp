@@ -12,8 +12,9 @@ int main()
 {
 	LOG(__func__);
 	Grid grid("simple_level0.txt");
-	Screen terminalscreen;
-	terminalscreen.displayMainWindow();
+	grid.StartTheGame();
+//	Screen terminalscreen;
+//	terminalscreen.displayMainWindow();
 /*	while(true)
 	{
 		cin.get();
