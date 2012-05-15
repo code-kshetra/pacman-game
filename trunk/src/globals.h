@@ -21,6 +21,11 @@ const int DIR_RIGHT = 2;
 const int DIR_UP = 3;
 const int DIR_DOWN = 4;
 
+//Movement Error Flags
+const int BLOCKED_BY_WALL_FLAG = -3;
+const int GAME_OVER_FLAG = -4;
+const int SUCCESS_FLAG = 0;
+
 //For Logging messages
 #define DEBUG 1
 #if DEBUG
