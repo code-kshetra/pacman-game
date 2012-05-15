@@ -97,7 +97,7 @@ bool Square::isChanged()
 
 void Square::resetChanged()
 {
-	LOG(__func__);
+	//LOG(__func__);
 	changed = false;
 }
 
