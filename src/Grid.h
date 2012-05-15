@@ -48,8 +48,10 @@ Grid::Grid(string filename)
 void Grid::initGrid(ifstream &infile)
 {
 	int numGhost = 0;
+	int pacRow = 0;
+	int pacCol = 0;
 
-	int row = 0;
+	int row = 0;	
 	while(true)
 	{
 		string line;
@@ -57,6 +59,7 @@ void Grid::initGrid(ifstream &infile)
 
 		if(line == "")
 			break;
+		
 		
 		int col = 0;
 		for(int i=0; i<line.length(); i++)
@@ -76,8 +79,8 @@ void Grid::initGrid(ifstream &infile)
 				break;
 
 			case 'C':
-			case 'c':
-				pacman = Pacman(row, col, DIR_LEFT);
+				pacRow = row;
+				pacCol = col;
 				squares[row][col] = Square(TYPE_BLANK);
 				squares[row][col].setType2(TYPE2_PACMAN);
 				break;
@@ -93,6 +96,7 @@ void Grid::initGrid(ifstream &infile)
 			}
 			
 			col++;
+			pacman = Pacman(pacRow, pacCol, DIR_LEFT);
 		}
 		row++;
 	}
