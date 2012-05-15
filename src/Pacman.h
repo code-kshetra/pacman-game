@@ -18,6 +18,10 @@ private:
 public:
 	Pacman(){}
 	Pacman(int row, int col, int dir);	//This constructor is called, when the game screen is initialized for the first time.
+	
+	//Returns a part of the coordinates.
+	int getRow();
+	int getCol();
 
 	int getDirection();	//Returns the current direction that Pacman is facing.
 
@@ -28,7 +32,7 @@ public:
 	 * This method is used to move Pacman, wherever and whenever possible.
 	 * 	Pacman can move in its current direction only if there is no wall in front of it.
 	 *		If a wall is present, Pacman doesn't move and this function returns BLOCKED_BY_WALL_FLAG.
-	 * 		If a wall is not present, Pacman moves and the grid of squares is modified to accomodate this change.
+	 *		If a wall is not present, Pacman moves and the grid of squares is modified to accomodate this change.	      *		and if dots are present, they are eaten by Pacman (Still have to take care of this feature)
   	 */
 	int move(Square squares[NUM_ROWS][NUM_COLS]);		
 
@@ -40,6 +44,16 @@ Pacman::Pacman(int x, int y, int dir)
 	this->row = x;
 	this->col = y;
 	this->direction = dir;
+}
+
+int Pacman::getRow()
+{
+	return row;
+}
+
+int Pacman::getCol()
+{
+	return col;
 }
 
 void Pacman::toString()
