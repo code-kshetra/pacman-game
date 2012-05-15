@@ -166,6 +166,7 @@ void Grid::initGrid(ifstream &infile)
 void Grid::displayGrid()
 {
 	LOG(__func__);
+	system("cvlc Up.mp3 &");
 	for(int i=0; i<NUM_ROWS; i++)
 	{
 		for(int j=0; j<NUM_COLS; j++)
@@ -182,7 +183,7 @@ void Grid::displayGrid()
 		}
 		cout << endl;
 	}
-	cout<<"Lives: "<<"\t\t\t\t Time : "<<player.getTime()<<endl;
+	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<endl;
 	/*
 	pacman.toString();
 
@@ -295,6 +296,7 @@ void handleInterruptSignal(int signo)
 		cout<<"Game Ended!"<<endl;
 		cin.get();
 		LOG("There is a problem here see the code in "<<__func__<<endl);
+		system("pkill vlc");
 		exit(0);
 		//displayMainWindow();
 	}
@@ -311,7 +313,7 @@ void handleAlarmSignal(int signo)
 	LOG(__func__);
 	int i;
 	LOG(" ");
-	global_time += 0.04;
+	global_time += 1;
 	signal(SIGALRM,handleAlarmSignal);
 }
 void Grid::StartTheGame()
