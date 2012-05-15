@@ -26,9 +26,12 @@ const int DIR_DOWN = 4;
 const int BLOCKED_BY_WALL_FLAG = -3;
 const int GAME_OVER_FLAG = -4;
 const int SUCCESS_FLAG = 0;
+const int GHOST_MOVEMENT_ILLEGAL_FLAG = -5;
+
+const int GHOST_INVERSE_RELATIVE_SPEED = 1;
 
 //For Logging messages
-#define DEBUG 1
+#define DEBUG 0
 #if DEBUG
 #define LOG(s) cout<<s<<endl;
 #else

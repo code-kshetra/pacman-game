@@ -212,7 +212,10 @@ void Grid::modifyGrid()
 	//Right now, if Pacman is blocked by a wall, it tries out a different direction to move. 
 	if(pacman.move(squares) == BLOCKED_BY_WALL_FLAG)
 		pacman.changeDirection((pacman.getDirection() + 1) % 4);
-		
+	
+	for(int i=0; i<4; i++)
+		ghosts[i].move(squares, pacman);	
+
 	pacman.toString();
 }
 void Grid::changeToEchoMode(void)
@@ -276,8 +279,10 @@ void Grid::StartTheGame()
 	while(1)
 	{
 		changeToEchoMode();
-		clrscr();
+		//clrscr();
+		modifyGrid();
 		displayGrid();
+		cin.get();
 		changeToNonEchoMode();
 	
 	}

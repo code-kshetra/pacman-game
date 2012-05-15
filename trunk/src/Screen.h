@@ -9,7 +9,7 @@ using namespace std;
 #ifndef SCREEN_H
 #define	SCREEN_H
 #define SCREEN_SIZE 32 
-#define DEBUG 1
+#define DEBUG 0
 #if DEBUG
    #define LOG(s) cout<<s<<endl;
 #else
