@@ -21,4 +21,11 @@ const int DIR_RIGHT = 2;
 const int DIR_UP = 3;
 const int DIR_DOWN = 4;
 
+//For Logging messages
+#define DEBUG 1
+#if DEBUG
+#define LOG(s) cout<<s<<endl;
+#else
+#define LOG(s) /* */
+#endif
 #endif
