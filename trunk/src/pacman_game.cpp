@@ -8,7 +8,7 @@ int main()
 	LOG(__func__);
 	Screen gamescreen;
 	gamescreen.displayMainWindow();
-/*	while(1)
+	while(1)
 	{
 		int opt = gamescreen.displayOptionsWindow();
 		switch(opt)
@@ -23,6 +23,4 @@ int main()
 			       cin.get();
 		}
 	}
-
-*/
 }
