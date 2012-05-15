@@ -1,12 +1,27 @@
 #include "headers.h"
 #include "Screen.h"
+#include "globals.h"
+#include "Square.h"
+#include "Grid.h"
+#include "Pacman.h"
+#include "Ghost.h"
 #include<iostream>
 using namespace std;
 
 int main()
 {
 	LOG(__func__);
-	Screen gamescreen;
+	Grid grid("simple_level0.txt");
+/*	while(true)
+	{
+		cin.get();
+
+		grid.modifyGrid();
+		grid.displayGrid();
+	}
+	cin.get();
+	*/
+/*	Screen gamescreen;
 	gamescreen.displayMainWindow();
 	while(1)
 	{
@@ -23,4 +38,5 @@ int main()
 			       cin.get();
 		}
 	}
+*/
 }
