@@ -214,7 +214,11 @@ void Grid::modifyGrid()
 		pacman.changeDirection((pacman.getDirection() + 1) % 4);
 	
 	for(int i=0; i<4; i++)
-		ghosts[i].move(squares, pacman);	
+		if(ghosts[i].move(squares, pacman) == GAME_OVER_FLAG)
+		{
+			cout << "Ghost " << i << " ate Pacman...Exiting...";
+			exit(0);		//Handle this properly later..Go back to main menu.
+		}	
 
 	pacman.toString();
 }
