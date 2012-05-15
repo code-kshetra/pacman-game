@@ -33,6 +33,9 @@ public:
 
 	//Find all modified squares and refresh (for double buffering) ----------- To be filled
 	void findModifiedSquares();
+
+	//This method will be called when a timer goes off
+	void modifyGrid();
 };
 
 Grid::Grid(string filename)
@@ -135,7 +138,7 @@ void Grid::findModifiedSquares()
 
 void Grid::setCursor(int x, int y)
 {
-	cout <<	"\033[" << x << ";" << y << "H";
+	cout <<	"\033[" << x+1 << ";" << y+1 << "H";
 }
 
 
@@ -148,6 +151,14 @@ void Grid::setCursor(int x, int y, string str)
 void Grid::clrscr()
 {
 	cout <<	"\033[2J";
+}
+
+void Grid::modifyGrid()
+{
+	if(pacman.move(squares) == BLOCKED_BY_WALL_FLAG)
+		pacman.changeDirection((pacman.getDirection() + 1) % 4);
+		
+	pacman.toString();
 }
 
 #endif

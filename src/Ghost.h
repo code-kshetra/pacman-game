@@ -9,6 +9,7 @@ class Ghost
 private:
 	int x, y;
 	int direction;
+	int moveTimer;			//This is to ensure that the speed of the ghost < speed of Pacman
 
 public:
 	Ghost(){}
@@ -26,6 +27,8 @@ Ghost::Ghost(int x, int y, int dir)
 	this->x = x;
 	this->y = y;
 	this->direction = dir;
+
+	moveTimer = 2;
 }
 
 void Ghost::toString()
