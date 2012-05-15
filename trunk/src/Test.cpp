@@ -16,6 +16,14 @@ int main()
 	sq.toString();*/
 
 	Grid grid("pacman-screen.txt");
+	
+	while(true)
+	{
+		cin.get();
+
+		grid.modifyGrid();
+		grid.displayGrid();
+	}
 
 /*	Pacman pacman(1,2, DIR_LEFT);
 	pacman.toString();
