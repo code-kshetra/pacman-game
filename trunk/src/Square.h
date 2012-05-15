@@ -7,6 +7,10 @@
 
 using namespace std;
 
+/*
+ * The Game consists of a grid, which is an MxN matrix of squares, which are defined below.
+ */
+
 class Square
 {
 private:

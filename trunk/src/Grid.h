@@ -12,28 +12,40 @@
 
 using namespace std;
 
+/*
+ * The gaming screen is made up of a MxN Grid of squares.
+ * The Grid class maintains the status of each location in the gaming screen.
+ * It also keeps track of Pacman and the Ghosts using their respective objects.
+ */
+
 class Grid
 {
 private:
 	Square squares[NUM_ROWS][NUM_COLS];			//Assume that a grid is 21x40
 
+	//These 2 variables are used to keep track of the game's characters
 	Pacman pacman;
 	Ghost ghosts[4];
 
 
 	void initGrid(ifstream &infile);			//Initializes grid from pacman-screen.txt
 	
-public:
-	Grid(string filename);
+	/*This set of 3 functions, uses VT100 escape sequences to modify the display of the terminal */
+	void clrscr();	
 	void setCursor(int x, int y);
 	void setCursor(int x, int y, string str);
-	void clrscr();	
+public:
+	//This constructor reads a level map from filename, and calls initGrid() to initialize the squares array. 
+	Grid(string filename);
+
+	//This function repositions the cursor at the top left of the screen, and redraws the grid in the terminal.
 	void displayGrid();
 
 	//Find all modified squares and refresh (for double buffering) ----------- To be filled
 	void findModifiedSquares();
 
-	//This method will be called when a timer goes off
+	/*This method will be called when a timer goes off, and calls the move() methods of Pacman and all 4 Ghosts
+		to update their locations (wherever possible). This function will be used by the signal handlers of Screen.h */
 	void modifyGrid();
 };
 
@@ -154,6 +166,7 @@ void Grid::clrscr()
 
 void Grid::modifyGrid()
 {
+	//Right now, if Pacman is blocked by a wall, it tries out a different direction to move. 
 	if(pacman.move(squares) == BLOCKED_BY_WALL_FLAG)
 		pacman.changeDirection((pacman.getDirection() + 1) % 4);
 		

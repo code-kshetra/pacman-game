@@ -4,21 +4,33 @@
 #include "globals.h"
 #include "Square.h"
 
+/*
+ * This class is used to keep track of the current status of Pacman,
+ * 	and to make it come to life.
+ */
+
 class Pacman
 {
 private:
-	int row, col;
-	int direction;
+	int row, col;		//The row and col of the Grid where Pacman is currently located.
+	int direction;		//One of the four DIR_xxx constants
 
 public:
 	Pacman(){}
-	Pacman(int row, int col, int dir);
+	Pacman(int row, int col, int dir);	//This constructor is called, when the game screen is initialized for the first time.
 
-	int getDirection();
+	int getDirection();	//Returns the current direction that Pacman is facing.
 
-	//Algorithms to be implemented
-	void changeDirection(int dir);	 //----------- To be filled
-	int move(Square squares[NUM_ROWS][NUM_COLS]);					//----------- To be filled
+	//This method is used to change the direction that Pacman is facing.
+	void changeDirection(int dir);	 
+
+	/*
+	 * This method is used to move Pacman, wherever and whenever possible.
+	 * 	Pacman can move in its current direction only if there is no wall in front of it.
+	 *		If a wall is present, Pacman doesn't move and this function returns BLOCKED_BY_WALL_FLAG.
+	 * 		If a wall is not present, Pacman moves and the grid of squares is modified to accomodate this change.
+  	 */
+	int move(Square squares[NUM_ROWS][NUM_COLS]);		
 
 	void toString();
 };
@@ -42,6 +54,13 @@ int Pacman::move(Square squares[NUM_ROWS][NUM_COLS])
 {
 	//Pacman can only move in 'direction' if there is no Wall.
 	//So, check if there's a wall.
+	/*
+	 * If a wall is present, do not move Pacman but return BLOCKED_BY_WALL_FLAG.
+	 *	However, if a wall is NOT present, clear the current square occupied by Pacman
+	 * 		and change Pacman's location to the adjacent square (depending on its direction)
+	 * 		After that, readjust the Grid of Squares to show Pacman at this new location
+	 *			and return SUCCESS_FLAG;
+ 	 */
 
 	switch(direction)
 	{
