@@ -23,12 +23,11 @@ private:
 
 	void initGrid(ifstream &infile);			//Initializes grid from pacman-screen.txt
 	
-	void clrscr();	
-	void setCursor(int x, int y);
-	void setCursor(int x, int y, string str);
 public:
 	Grid(string filename);
-
+	void setCursor(int x, int y);
+	void setCursor(int x, int y, string str);
+	void clrscr();	
 	void displayGrid();
 
 	//Find all modified squares and refresh (for double buffering) ----------- To be filled
