@@ -55,6 +55,10 @@ private:
 	void clrscr();	
 	void setCursor(int x, int y);
 	void setCursor(int x, int y, string str);
+	
+	/*Add/Remove the cursor from terminal*/
+	void removeCursor();
+	void addCursor();
 
 	/*These two functions are used to change the mode of the terminal to echo or non-echo characters*/
 	inline void changeToNonEchoMode(void);
@@ -83,6 +87,11 @@ public:
 	/*This method will be called when a timer goes off, and calls the move() methods of Pacman and all 4 Ghosts
 		to update their locations (wherever possible). This function will be used by the signal handlers of Screen.h */
 	void modifyGrid();
+
+	/* Using the concept of double buffering, this method minimizes the flicker when the screen is redrawn, by	
+	 * 	drawing only the squares that are modified.
+ 	 */
+	void updateVisualGrid();
 };
 
 Grid::Grid(string filename)
@@ -183,9 +192,45 @@ void Grid::displayGrid()
 	}*/
 }
 
+void Grid::updateVisualGrid()
+{
+	LOG(__func__);
+	for(int i=0; i<NUM_ROWS; i++)
+	{
+		for(int j=0; j<NUM_COLS; j++)
+		{
+			if(squares[i][j].isChanged())
+			{
+				setCursor(i, j);
+
+				if(squares[i][j].getType2() != TYPE_BLANK)
+				{
+					squares[i][j].displayType2();
+				}
+				else
+				{
+					squares[i][j].displayType1();
+				}
+
+				squares[i][j].resetChanged();
+			}
+		}
+	}
+}
+
 void Grid::findModifiedSquares()
 {
 	LOG(__func__);
+}
+
+void Grid::removeCursor()
+{
+	cout << "\033[?25l";
+}
+
+void Grid::addCursor()
+{
+	cout << "\033[?25h";
 }
 
 void Grid::setCursor(int x, int y)
@@ -216,11 +261,11 @@ void Grid::modifyGrid()
 	for(int i=0; i<4; i++)
 		if(ghosts[i].move(squares, pacman) == GAME_OVER_FLAG)
 		{
-			cout << "Ghost " << i << " ate Pacman...Exiting...";
-			exit(0);		//Handle this properly later..Go back to main menu.
+			//cout << "Ghost " << i << " ate Pacman...NOT Exiting...Continuing";
+			//exit(0);		//Handle this properly later..Go back to main menu.
 		}	
 
-	pacman.toString();
+	//pacman.toString();
 }
 void Grid::changeToEchoMode(void)
 {
@@ -280,14 +325,20 @@ void Grid::StartTheGame()
 	signal(SIGINT, handleInterruptSignal);
 	signal(SIGALRM, handleAlarmSignal);
 	settimer();
+
+	displayGrid();
+	
 	while(1)
 	{
+		removeCursor();
 		changeToEchoMode();
 		//clrscr();
 		modifyGrid();
-		displayGrid();
+		//displayGrid();
+		updateVisualGrid();
 		cin.get();
 		changeToNonEchoMode();
+		addCursor();
 	
 	}
 }
