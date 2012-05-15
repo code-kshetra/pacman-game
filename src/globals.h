@@ -12,8 +12,8 @@ const int TYPE2_GHOST = 5;
 const int TYPE_BLANK = 6;	
 
 //To define the GRID
-const int NUM_ROWS = 21;
-const int NUM_COLS = 40;
+const int NUM_ROWS = 32;
+const int NUM_COLS = NUM_ROWS;
 
 //Direction of movement
 const int DIR_LEFT = 1;
