@@ -15,19 +15,19 @@ using namespace std;
 #else
    #define LOG(s) /* */
 #endif
-int lives_count;
-int time_count;
+//int lives_count;
+//int time_count;
 class Screen
 {
  private:
 //Variables
       int option;
-      char game_area[SCREEN_SIZE][SCREEN_SIZE];
+ //     char game_area[SCREEN_SIZE][SCREEN_SIZE];
 // Other Game Window Helper Functions here
-      void displayGame_Area();
-      void initGame_Area();
-      friend void gameInterruptSignalHandler(int ); //You cannot create a signal handler as a memeber function.
-      friend void gameAlarmSignalHandler(int ); //You cannot create a signal handler as a memeber function.
+  //    void displayGame_Area();
+  //    void initGame_Area();
+  //    friend void gameInterruptSignalHandler(int ); //You cannot create a signal handler as a memeber function.
+  //    friend void gameAlarmSignalHandler(int ); //You cannot create a signal handler as a memeber function.
       
  public:
       Screen();
@@ -39,15 +39,17 @@ class Screen
 };
 Screen::Screen()
 {
-	lives_count = 4;
 	option = -1;
+/*
+	lives_count = 4;
 	time_count = 0;
 	LOG(__func__);
 	bzero(game_area,sizeof(game_area));
 	initGame_Area();
 	displayGame_Area();
+*/
 }
-void Screen::initGame_Area()
+/*void Screen::initGame_Area()
 {
 	time_count = 0;
 	for(int i=0 ;i<SCREEN_SIZE;i++)
@@ -69,6 +71,7 @@ void Screen::initGame_Area()
 	game_area[SCREEN_SIZE-2][16] = '@';
 	game_area[15][15] = 'C';
 }
+*/
 Screen::~Screen()
 {
 	LOG(__func__);
@@ -91,7 +94,7 @@ int Screen::displayOptionsWindow()
 	cin>>option;
 	return option;
 }
-void gameInterruptSignalHandler(int signo)
+/*void gameInterruptSignalHandler(int signo)
 {
 	LOG(__func__);
 	int i;
@@ -124,6 +127,7 @@ void gameAlarmSignalHandler(int signo)
 	time_count++;
 	signal(SIGALRM,gameAlarmSignalHandler);
 }
+
 void Screen::displayGame_Area()
 {
 	LOG(__func__);
@@ -141,15 +145,21 @@ void Screen::displayGame_Area()
 	cout<<"Press ^C to Interrupt!"<<endl;
 
 }
+*/
 void Screen::displayGameWindow()
 {
 	LOG(__func__);
-	initGame_Area();
-	displayGame_Area();
-	LOG("The terminal entered the non-echo mode");
-	LOG("Press ^C to exit ");
-	system("stty raw -echo isig");
-	signal(SIGINT, gameInterruptSignalHandler);
+	// I've to Call the GRID class object here :)
+	LOG("// I've to Call the GRID class object here :)");
+	LOG("//****** Some member function of the Grid class has to do all the following things.");
+	cin.get();
+	cin.get();
+//	initGame_Area();
+//	displayGame_Area();
+//	LOG("The terminal entered the non-echo mode");
+//	LOG("Press ^C to exit ");
+//	system("stty raw -echo isig");
+/*	signal(SIGINT, gameInterruptSignalHandler);
 	signal(SIGALRM, gameAlarmSignalHandler);
 	while(1)
 	{
@@ -159,6 +169,7 @@ void Screen::displayGameWindow()
 		system("stty raw -echo isig");
 		alarm(1);
 	}
+*/
 }
 void Screen::displayMainWindow()
 {
