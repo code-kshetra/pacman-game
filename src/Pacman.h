@@ -84,6 +84,7 @@ int Pacman::move(Square squares[NUM_ROWS][NUM_COLS])
 				return BLOCKED_BY_WALL_FLAG;
 			else
 			{
+				squares[row][col].setType1(TYPE_BLANK);
 				squares[row][col].setType2(TYPE_BLANK);
 				col = col-1;
 			}
@@ -95,6 +96,7 @@ int Pacman::move(Square squares[NUM_ROWS][NUM_COLS])
 				return BLOCKED_BY_WALL_FLAG;
 			else
 			{
+				squares[row][col].setType1(TYPE_BLANK);
 				squares[row][col].setType2(TYPE_BLANK);
 				col = col+1;
 			}
@@ -106,6 +108,7 @@ int Pacman::move(Square squares[NUM_ROWS][NUM_COLS])
 				return BLOCKED_BY_WALL_FLAG;
 			else
 			{
+				squares[row][col].setType1(TYPE_BLANK);
 				squares[row][col].setType2(TYPE_BLANK);
 				row = row-1;
 			}
@@ -117,6 +120,7 @@ int Pacman::move(Square squares[NUM_ROWS][NUM_COLS])
 				return BLOCKED_BY_WALL_FLAG;
 			else
 			{				
+				squares[row][col].setType1(TYPE_BLANK);
 				squares[row][col].setType2(TYPE_BLANK);
 				row = row+1;
 			}
