@@ -100,7 +100,9 @@ public:
 
 Grid::Grid(string filename)
 {
-	LOG(__func__);
+	LOG(__func__); //Calling VLC here
+	system("cvlc /home/vaishakh/pacman-game/src/Up.mp3 &"); // The absolute path of the file is to be added.
+	sleep(1);
 	clrscr();
 
 	ifstream infile(filename.c_str());
@@ -170,7 +172,6 @@ void Grid::initGrid(ifstream &infile)
 void Grid::displayGrid()
 {
 	LOG(__func__);
-	//system("cvlc Up.mp3 &");
 	for(int i=0; i<NUM_ROWS; i++)
 	{
 		for(int j=0; j<NUM_COLS; j++)
@@ -302,7 +303,7 @@ void handleInterruptSignal(int signo)
 	{
 		cout<<"Game Ended!"<<endl;
 		cin.get();
-		//system("pkill vlc");
+		system("pkill vlc");
 		exit(0);
 		//displayMainWindow();
 	}
