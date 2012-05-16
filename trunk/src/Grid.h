@@ -31,6 +31,7 @@ private:
 	{
 		float time_count;
 		string name;
+		int lives;
 	public:
 		Player_Details();
 		void WriteDataToHighScoreFile(); //when the game ends write the data to high scores file.
@@ -70,6 +71,9 @@ private:
 
 	/*The function to set the alarm timer as explained in the website*/
 	void settimer();
+
+	/*This function takes a character ch read from the stdin and changes the direction  of the pacman*/
+	void ProcessUserInput(const int ch);
 
 public:
 	//This constructor reads a level map from filename, and calls initGrid() to initialize the squares array. 
@@ -166,7 +170,7 @@ void Grid::initGrid(ifstream &infile)
 void Grid::displayGrid()
 {
 	LOG(__func__);
-	system("cvlc Up.mp3 &");
+	//system("cvlc Up.mp3 &");
 	for(int i=0; i<NUM_ROWS; i++)
 	{
 		for(int j=0; j<NUM_COLS; j++)
@@ -184,6 +188,7 @@ void Grid::displayGrid()
 		cout << endl;
 	}
 	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<endl;
+	cout<<"Press ^C to pause the game!"<<endl;
 	/*
 	pacman.toString();
 
@@ -217,6 +222,8 @@ void Grid::updateVisualGrid()
 			}
 		}
 	}
+//	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<endl; Samir figure out a way to update the scores here we need to print these lines
+//	cout<<"Press ^C to pause the game!"<<endl;
 }
 
 void Grid::findModifiedSquares()
@@ -295,8 +302,7 @@ void handleInterruptSignal(int signo)
 	{
 		cout<<"Game Ended!"<<endl;
 		cin.get();
-		LOG("There is a problem here see the code in "<<__func__<<endl);
-		system("pkill vlc");
+		//system("pkill vlc");
 		exit(0);
 		//displayMainWindow();
 	}
@@ -313,17 +319,36 @@ void handleAlarmSignal(int signo)
 	LOG(__func__);
 	int i;
 	LOG(" ");
-	global_time += 1;
+	global_time += 0.04;
 	signal(SIGALRM,handleAlarmSignal);
+}
+void Grid::ProcessUserInput(const int pressed_key)
+{
+	switch(pressed_key)
+	{
+		case 'J':
+		case 'j':   pacman.changeDirection(DIR_LEFT);
+			    break;
+		case 'I':
+		case 'i':   pacman.changeDirection(DIR_UP);
+			    break;
+		case 'L':
+		case 'l': pacman.changeDirection(DIR_RIGHT);
+			  break;
+		case 'K':
+		case 'k': pacman.changeDirection(DIR_DOWN);
+			  break;
+		default: LOG("Invalid Key pressed!");
+			 break;
+	}
+	modifyGrid();
+	
+
 }
 void Grid::StartTheGame()
 {
 	LOG(__func__);
-//	initGame_Area();
-//	displayGame_Area();
-//	LOG("The terminal entered the non-echo mode");
-//	LOG("Press ^C to exit ");
-//	system("stty raw -echo isig");
+	char key_pressed;
 	signal(SIGINT, handleInterruptSignal);
 	signal(SIGALRM, handleAlarmSignal);
 	settimer();
@@ -336,10 +361,23 @@ void Grid::StartTheGame()
 		changeToEchoMode();
 		//clrscr();
 		modifyGrid();
+		updateVisualGrid(); //We need to call this inside the handleAlarmSignal() [Video camera issue]
 		//displayGrid();
-		updateVisualGrid();
-		cin.get();
+		//cin.get();
 		changeToNonEchoMode();
+		if(read(STDIN_FILENO, &key_pressed , sizeof(char))>0)
+		{
+			cout<<endl;//We need this otherwise the characters don't move.
+			//cout<<"key_pressed  =" <<key_pressed<<endl;
+			//cout<<' '; //See here 
+			ProcessUserInput(key_pressed);
+		}
+		else
+		{
+			//  check for EINTR and continue the loop
+
+		}
+
 		addCursor();
 	
 	}
@@ -370,6 +408,10 @@ Grid::Player_Details::Player_Details()
 	cout<<"Enter the player name: ";
 	cin>>name;
 	global_time = time_count = 0;
+	lives = 1;
+	cout<<"Press any key to start the game!"<<endl;
+	cin.get();
+	cin.get();
 }
 string Grid::Player_Details::getName()
 {
