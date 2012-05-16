@@ -101,9 +101,10 @@ public:
 
 void Grid::Player_Details::WriteDataToHighScoreFile()
 {
-FILE *fp;
-fp=fopen("score.txt","a");
-fprintf(fp,"%s %f \n", (this->name).c_str(), global_time);
+	FILE *fp;
+	fp=fopen("score.txt","a");
+	fprintf(fp,"%s %f \n", (this->name).c_str(), global_time);
+	fclose(fp);
 }	
 
 Grid::Grid(string filename)
@@ -352,7 +353,7 @@ void Grid::ProcessUserInput(const int pressed_key)
 		default: LOG("Invalid Key pressed!");
 			 break;
 	}
-	modifyGrid();
+	//modifyGrid();
 	
 
 }
