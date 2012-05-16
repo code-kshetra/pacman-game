@@ -22,6 +22,10 @@ float global_time = 0; // This is beacuse of some problems with the time_count i
 void handleAlarmSignal(int);
 void handleInterruptSignal(int);
 
+//Extremely bad programming style, but what to do? The guys who invented signal handlers didn't think about class member functions.
+class Grid;
+Grid *globalGrid;
+//GLOBAL VARIABLE ----- BEWARE....DO not use this name anywhere
 
 class Grid
 {
@@ -110,7 +114,7 @@ void Grid::Player_Details::WriteDataToHighScoreFile()
 Grid::Grid(string filename)
 {
 	LOG(__func__); //Calling VLC here
-	system("cvlc /home/vaishakh/pacman-game/src/Up.mp3 &"); // The absolute path of the file is to be added.
+	system("totem ./Up.mp3 &"); // The absolute path of the file is to be added.
 	sleep(1);
 	clrscr();
 
@@ -118,6 +122,9 @@ Grid::Grid(string filename)
 
 	initGrid(infile);
 	//displayGrid();
+
+	//For the signal handler
+	globalGrid = this;		//GLOBAL VARIABLE INIT
 }
 
 void Grid::initGrid(ifstream &infile)
@@ -332,6 +339,10 @@ void handleAlarmSignal(int signo)
 	int i;
 	LOG(" ");
 	global_time += 0.04;
+
+	globalGrid->modifyGrid();
+	globalGrid->updateVisualGrid();
+
 	signal(SIGALRM,handleAlarmSignal);
 }
 void Grid::ProcessUserInput(const int pressed_key)
@@ -339,16 +350,24 @@ void Grid::ProcessUserInput(const int pressed_key)
 	switch(pressed_key)
 	{
 		case 'J':
-		case 'j':   pacman.changeDirection(DIR_LEFT);
+		case 'j':   
+		 	    if(pacman.isValidDirection(squares, DIR_LEFT))
+				pacman.changeDirection(DIR_LEFT);
 			    break;
 		case 'I':
-		case 'i':   pacman.changeDirection(DIR_UP);
+		case 'i':   
+			    if(pacman.isValidDirection(squares, DIR_UP))	
+				pacman.changeDirection(DIR_UP);
 			    break;
 		case 'L':
-		case 'l': pacman.changeDirection(DIR_RIGHT);
+		case 'l': 
+			    if(pacman.isValidDirection(squares, DIR_RIGHT))
+				pacman.changeDirection(DIR_RIGHT);
 			  break;
 		case 'K':
-		case 'k': pacman.changeDirection(DIR_DOWN);
+		case 'k': 
+			    if(pacman.isValidDirection(squares, DIR_DOWN))
+				pacman.changeDirection(DIR_DOWN);
 			  break;
 		default: LOG("Invalid Key pressed!");
 			 break;
@@ -372,8 +391,8 @@ void Grid::StartTheGame()
 		removeCursor();
 		changeToEchoMode();
 		//clrscr();
-		modifyGrid();
-		updateVisualGrid(); //We need to call this inside the handleAlarmSignal() [Video camera issue]
+		//modifyGrid();
+		//updateVisualGrid(); //We need to call this inside the handleAlarmSignal() [Video camera issue]
 		//displayGrid();
 		//cin.get();
 		changeToNonEchoMode();
