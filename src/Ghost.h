@@ -167,7 +167,7 @@ int Ghost::getBestDirection(Square squares[NUM_ROWS][NUM_COLS], Pacman pacman)
 		//Pacman is below the Ghost
 
 		//First, try to move the Ghost down, if possible
-		if(squares[row+1][col].getType1() != TYPE1_WALL)
+		if(squares[row+1][col].getType1() != TYPE1_WALL && squares[row+1][col].getType2() != TYPE2_GHOST)
 		{
 			//Valid Move
 			return DIR_DOWN;
@@ -180,7 +180,7 @@ int Ghost::getBestDirection(Square squares[NUM_ROWS][NUM_COLS], Pacman pacman)
 	else
 	{
 		//Pacman is above the Ghost
-		if(squares[row-1][col].getType1() != TYPE1_WALL)
+		if(squares[row-1][col].getType1() != TYPE1_WALL && squares[row-1][col].getType2() != TYPE2_GHOST)
 		{
 			//Valid Move
 			return DIR_UP;
@@ -199,11 +199,11 @@ int Ghost::getHorizontalDirection(Square squares[NUM_ROWS][NUM_COLS], Pacman pac
 	if(pacman.getCol() < col)
 	{
 		//Pacman is to the Left of the Ghost. Try to move if possible
-		if(squares[row][col-1].getType1() != TYPE1_WALL)
+		if(squares[row][col-1].getType1() != TYPE1_WALL && squares[row][col-1].getType2() != TYPE2_GHOST)
 			return DIR_LEFT;
 
 		//Now, try to move right
-		if(squares[row][col+1].getType1() != TYPE1_WALL)
+		if(squares[row][col+1].getType1() != TYPE1_WALL && squares[row][col+1].getType2() != TYPE2_GHOST)
 			return DIR_RIGHT;
 		else				//Last option
 			return lastResortDirection;
@@ -211,11 +211,11 @@ int Ghost::getHorizontalDirection(Square squares[NUM_ROWS][NUM_COLS], Pacman pac
 	else
 	{
 		//Pacman is to the Right of the Ghost. Try to move if possible
-		if(squares[row][col+1].getType1() != TYPE1_WALL)
+		if(squares[row][col+1].getType1() != TYPE1_WALL && squares[row][col+1].getType2() != TYPE2_GHOST)
 			return DIR_RIGHT;
 
 		//Now, try to move left
-		if(squares[row][col-1].getType1() != TYPE1_WALL)
+		if(squares[row][col-1].getType1() != TYPE1_WALL && squares[row][col-1].getType2() != TYPE2_GHOST)
 			return DIR_LEFT;
 		else				//Last option
 			return lastResortDirection;

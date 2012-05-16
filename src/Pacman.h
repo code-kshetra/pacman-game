@@ -14,6 +14,7 @@ class Pacman
 private:
 	int row, col;		//The row and col of the Grid where Pacman is currently located.
 	int direction;		//One of the four DIR_xxx constants
+	int moveTimer;			//This is to ensure that the speed of the ghost < speed of Pacman
 
 public:
 	Pacman(){}
@@ -27,6 +28,9 @@ public:
 
 	//This method is used to change the direction that Pacman is facing.
 	void changeDirection(int dir);	 
+	
+	//This method is needed when a user tries to change the direction of Pacman, when it is invalid
+	bool isValidDirection(Square squares[NUM_ROWS][NUM_COLS], int dir);
 
 	/*
 	 * This method is used to move Pacman, wherever and whenever possible.
@@ -44,6 +48,8 @@ Pacman::Pacman(int x, int y, int dir)
 	this->row = x;
 	this->col = y;
 	this->direction = dir;
+
+	moveTimer = PACMAN_INVERSE_RELATIVE_SPEED;
 }
 
 int Pacman::getRow()
@@ -66,6 +72,18 @@ void Pacman::toString()
 //Returns an error flag if it cannot move
 int Pacman::move(Square squares[NUM_ROWS][NUM_COLS])
 {
+	//First, check if it's the Pacman's turn to move (Note: This is done to reduce Pacman's speed compared to the refresh rate of the signal handler.
+	if(moveTimer != 0)
+	{
+		moveTimer--;
+		return GHOST_MOVEMENT_ILLEGAL_FLAG;
+	}
+	
+	//Reset Timer
+	moveTimer = PACMAN_INVERSE_RELATIVE_SPEED;
+
+
+
 	//Pacman can only move in 'direction' if there is no Wall.
 	//So, check if there's a wall.
 	/*
@@ -140,6 +158,30 @@ int Pacman::getDirection()
 void Pacman::changeDirection(int dir)
 {
 	direction = dir;
+}
+
+bool Pacman::isValidDirection(Square squares[NUM_ROWS][NUM_COLS], int dir)
+{
+	switch(dir)
+	{
+		case DIR_LEFT:
+	                if(squares[row][col-1].getType1() == TYPE1_WALL)
+				return false;
+			break;
+		case DIR_RIGHT:
+			if(squares[row][col+1].getType1() == TYPE1_WALL)
+				return false;
+			break;
+		case DIR_UP:
+			if(squares[row-1][col].getType1() == TYPE1_WALL)
+				return false;
+			break;
+		case DIR_DOWN:
+			if(squares[row+1][col].getType1() == TYPE1_WALL)
+				return false;
+			break;
+	}	
+	return true;
 }
 
 #endif
