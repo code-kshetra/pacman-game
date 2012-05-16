@@ -1,0 +1,3 @@
+vaishakh 114.0
+satvik 98.0
+samir 93.0
