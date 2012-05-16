@@ -218,13 +218,13 @@ void Grid::updateVisualGrid()
 				{
 					squares[i][j].displayType1();
 				}
-
 				squares[i][j].resetChanged();
 			}
 		}
 	}
-//	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<endl; Samir figure out a way to update the scores here we need to print these lines
-//	cout<<"Press ^C to pause the game!"<<endl;
+	setCursor(32, 0);
+	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<endl; //Samir figure out a way to update the scores here we need to print these lines
+	//cout<<"Press ^C to pause the game!"<<endl;
 }
 
 void Grid::findModifiedSquares()
@@ -265,7 +265,9 @@ void Grid::modifyGrid()
 	LOG(__func__);
 	//Right now, if Pacman is blocked by a wall, it tries out a different direction to move. 
 	if(pacman.move(squares) == BLOCKED_BY_WALL_FLAG)
-		pacman.changeDirection((pacman.getDirection() + 1) % 4);
+	{
+		//pacman.changeDirection((pacman.getDirection() + 1) % 4);
+	}
 	
 	for(int i=0; i<4; i++)
 		if(ghosts[i].move(squares, pacman) == GAME_OVER_FLAG)

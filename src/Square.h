@@ -135,7 +135,7 @@ void Square::displayType(int type)
 	default:
 		cout << '?';
 	}
-	cout<<' '; //a space to look neat!
+//	cout<<' '; //a space to look neat!		-- The Cause of a BUG!
 }
 
 #endif
