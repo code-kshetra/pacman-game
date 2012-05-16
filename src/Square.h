@@ -20,7 +20,10 @@ private:
 
 	bool changed;		//Needed for double buffering to record only those squares that have been modified and need to be redrawn.
 
+
+
 	void displayType(int type);
+	
 
 public:
 	
@@ -39,6 +42,9 @@ public:
 	void resetChanged();
 
 	void toString();
+
+	void setCountOfBlanks(int);
+	int getCountOfBlanks(void);
 	
 };
 
@@ -46,9 +52,9 @@ Square::Square(int t1)
 {
 	//LOG(__func__);
 	this->changed = false;
-
 	type1 = t1;
 	type2 = TYPE_BLANK;
+
 }
 
 int Square::getType1()
@@ -135,7 +141,6 @@ void Square::displayType(int type)
 	default:
 		cout << '?';
 	}
-//	cout<<' '; //a space to look neat!		-- The Cause of a BUG!
+//	cout<<' '; //a space to look neat!		-- The Cause of a BUG!  I'll give you 100 bugs for finding this BUG :-)
 }
-
 #endif

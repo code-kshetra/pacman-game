@@ -4,6 +4,7 @@
  *
  * Created on 14 May, 2012, 11:14 PM
  */
+#include "Grid.h"
 #include<iostream>
 using namespace std;
 #ifndef SCREEN_H
@@ -152,8 +153,9 @@ void Screen::displayGameWindow()
 	// I've to Call the GRID class object here :)
 	LOG("// I've to Call the GRID class object here :)");
 	LOG("//****** Some member function of the Grid class has to do all the following things.");
-	cin.get();
-	cin.get();
+	system("./game");
+	//Grid grid("simple_level0.txt");
+	//grid.StartTheGame();
 //	initGame_Area();
 //	displayGame_Area();
 //	LOG("The terminal entered the non-echo mode");
@@ -198,15 +200,16 @@ void Screen::displayHighScoresWindow()
 	LOG(__func__);
 	system("clear; Pacman ");
 	cout<<"High Scores\n"<<endl;
-	cout<<"    Name \t Time \n";
+	cout<<"    Name \t\t Time \n";
 	FILE *fp;
 	char player_name[20];
 	float score;
+	int dots_eaten;
 	fp= fopen("score.txt","r");
 	while(!(feof(fp)))
 	{
-		fscanf(fp,"%s %f \n",player_name, &score );
-		printf("%s %f \n",player_name, score );
+		fscanf(fp,"%s %f %d\n",player_name, &score, &dots_eaten );
+		printf("%s\t%f\t%d\n",player_name, score, dots_eaten );
 	}
 	fclose(fp);
 	//cout<<"To be read out of the high score file :D!\n";

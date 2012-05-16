@@ -27,6 +27,12 @@ class Grid;
 Grid *globalGrid;
 //GLOBAL VARIABLE ----- BEWARE....DO not use this name anywhere
 
+//A varialbe that holds the count of total no of  . s
+static int total_of_dots;
+//A variable that holds the current count of the dots.
+int present_count_of_dots;
+
+
 class Grid
 {
 private:
@@ -36,12 +42,15 @@ private:
 		float time_count;
 		string name;
 		int lives;
+		int dots_ate;
 	public:
 		Player_Details();
 		void WriteDataToHighScoreFile(); //when the game ends write the data to high scores file.
 		inline string  getName();  //read the name
 		inline void setTime(float t); //set time_count to t
 		inline float getTime(void);  //return time_count
+		inline void setDotsAte(int); // set dots ate
+		inline int getDotsAte(void); // get dots ate
 	};
 
 	Square squares[NUM_ROWS][NUM_COLS];	//Assume that a grid is 32x32
@@ -52,6 +61,7 @@ private:
 	//These 2 variables are used to keep track of the game's characters
 	Pacman pacman;
 	Ghost ghosts[4];
+
 
 
 	void initGrid(ifstream &infile);			//Initializes grid from pacman-screen.txt
@@ -107,20 +117,21 @@ void Grid::Player_Details::WriteDataToHighScoreFile()
 {
 	FILE *fp;
 	fp=fopen("score.txt","a");
-	fprintf(fp,"%s %f \n", (this->name).c_str(), global_time);
+	fprintf(fp,"%s %f %d \n", (this->name).c_str(), global_time, total_of_dots - present_count_of_dots);
 	fclose(fp);
 }	
 
 Grid::Grid(string filename)
 {
 	LOG(__func__); //Calling VLC here
-	system("totem ./Up.mp3 &"); // The absolute path of the file is to be added.
+	system("cvlc Up.mp3 &"); // The absolute path of the file is to be added.
 	sleep(1);
 	clrscr();
 
 	ifstream infile(filename.c_str());
-
-	initGrid(infile);
+	total_of_dots = 0;
+	initGrid(infile); // after this call the total_of_dots has the count of total .s
+	present_count_of_dots = total_of_dots;
 	//displayGrid();
 
 	//For the signal handler
@@ -155,6 +166,7 @@ void Grid::initGrid(ifstream &infile)
 
 			case '.':
 				squares[row][col] = Square(TYPE1_DOT);
+				total_of_dots += 1;//count only the .s when initializing.
 				break;
 
 			case '%':
@@ -204,7 +216,8 @@ void Grid::displayGrid()
 		}
 		cout << endl;
 	}
-	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<endl;
+	player.setDotsAte(total_of_dots - present_count_of_dots); //This is necessary coz pacman eats variable no of dots
+	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<"\t\tScore : "<<(total_of_dots - present_count_of_dots)<<" (a lot of bonus included)"<<endl;
 	cout<<"Press ^C to pause the game!"<<endl;
 	/*
 	pacman.toString();
@@ -218,6 +231,7 @@ void Grid::displayGrid()
 void Grid::updateVisualGrid()
 {
 	LOG(__func__);
+	int count_of_change = 0;
 	for(int i=0; i<NUM_ROWS; i++)
 	{
 		for(int j=0; j<NUM_COLS; j++)
@@ -235,11 +249,15 @@ void Grid::updateVisualGrid()
 					squares[i][j].displayType1();
 				}
 				squares[i][j].resetChanged();
+				++count_of_change; // I need to put this here and count only those . changed to spaces .. Samir find out. I'm confused with these type1,type2 :P
 			}
 		}
 	}
+	present_count_of_dots -= count_of_change;
+	player.setDotsAte(total_of_dots - present_count_of_dots); //This is necessary coz pacman eats variable no of dots
 	setCursor(32, 0);
-	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<endl; //Samir figure out a way to update the scores here we need to print these lines
+	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<"\t\tScore : "<<player.getDotsAte()<<endl;
+	//cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<endl; //Samir figure out a way to update the scores here we need to print these lines
 	//cout<<"Press ^C to pause the game!"<<endl;
 }
 
@@ -313,6 +331,7 @@ void handleInterruptSignal(int signo)
 	LOG("//Code to pause the game or hang pacman and the ghosts");
 	system("stty -raw echo");
 	LOG("The terminal in normal echo mode!");
+	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<"\t\tScore : "<<(total_of_dots - present_count_of_dots)<<" (a lot of bonus included)"<<endl;
 	cout<<"Interrupt Recieved!\n";
 	cout<<"Do you Want to End the game[1-yes, 0-no]\n";
 	cin>>i;
@@ -325,7 +344,8 @@ void handleInterruptSignal(int signo)
 		exit(0);
 		//displayMainWindow();
 	}
-	cout<<"Continue the game\n Press any key to continue... "<<endl;
+	cout<<"Continue the game\n"<<"You Score is  "<<(total_of_dots-present_count_of_dots)<<"\n"<<        //supposed to call player.getDotsAte() :-( Not possible
+	       	"Press any key to continue... "<<endl;
 	cin.get();
 	cin.get();
 	signal(SIGALRM, handleAlarmSignal);
@@ -458,5 +478,13 @@ float  Grid::Player_Details::getTime(void)
 {
 	LOG(__func__);
 	return time_count;
+}
+void Grid::Player_Details::setDotsAte(int dt)
+{
+	dots_ate = dt;
+}
+int Grid::Player_Details::getDotsAte(void)
+{
+	return dots_ate;
 }
 #endif
