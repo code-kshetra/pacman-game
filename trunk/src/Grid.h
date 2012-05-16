@@ -98,6 +98,14 @@ public:
 	void updateVisualGrid();
 };
 
+
+void Grid::Player_Details::WriteDataToHighScoreFile()
+{
+FILE *fp;
+fp=fopen("score.txt","a");
+fprintf(fp,"%s %f \n", (this->name).c_str(), global_time);
+}	
+
 Grid::Grid(string filename)
 {
 	LOG(__func__); //Calling VLC here
