@@ -199,8 +199,18 @@ void Screen::displayHighScoresWindow()
 	system("clear; Pacman ");
 	cout<<"High Scores\n"<<endl;
 	cout<<"    Name \t Time \n";
-	cout<<"To be read out of the high score file :D!\n";
-	cout<<" 1  Satvik \t 0 seconds"<<endl;
+	FILE *fp;
+	char player_name[20];
+	float score;
+	fp= fopen("score.txt","r");
+	while(!(feof(fp)))
+	{
+		fscanf(fp,"%s %f \n",player_name, &score );
+		printf("%s %f \n",player_name, score );
+	}
+	fclose(fp);
+	//cout<<"To be read out of the high score file :D!\n";
+	//cout<<" 1  Satvik \t 0 seconds"<<endl;
 	cout<<"Press any key to continue...";
 	cin.get();
 	cin.get();
