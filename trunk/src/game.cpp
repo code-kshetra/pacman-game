@@ -16,12 +16,33 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/wait.h>
+#include <iostream>
 #include "Grid.h"
+
+using namespace std;
 
 int main()
 {
 	//Grid grid("simple_level0.txt");
-	Grid grid("simple_level1.txt");
+
+	cout << "Select level (Enter number): " << endl;
+	int n;
+	cin >> n;
+
+	string level = "";
+	switch(n)
+	{
+		case 1: level = "simple_level0.txt";
+			break;
+		case 2: level = "simple_level1.txt";
+			break;
+		case 3: level = "new_level.txt";
+			break;
+		default: level = "new_level.txt";
+	}
+	
+
+	Grid grid(level);
 	grid.StartTheGame();
 }
 
