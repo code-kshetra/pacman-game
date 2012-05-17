@@ -79,6 +79,8 @@ private:
 	
 	int numGhost;			//Counts the current number of ghosts
 
+	string level_filename; 		//Need this if restart is required at the end (GAME OVER)
+	
 
 
 	void initGrid(ifstream &infile);			//Initializes grid from pacman-screen.txt
@@ -144,6 +146,8 @@ Grid::Grid(string filename)
 	system("cvlc Up.mp3 &"); // The absolute path of the file is to be added.
 	sleep(1);
 	clrscr();
+
+	level_filename = filename;
 
 	ifstream infile(filename.c_str());
 	total_of_dots = 0;
@@ -331,13 +335,41 @@ void Grid::modifyGrid()
 			clrscr();
 			addCursor();
 			cout << endl;
-			system("clear");			//All this was done because of some video camera issues.
+			//system("clear");			//All this was done because of some video camera issues.
+			//cout << "GAME OVER...Press Ctrl+C to continue" << endl;
+			//fflush(stdout);		//Otherwise the previous message will be buffered until a signal is received.
+			changeToEchoMode();
+			system("clear;banner GAME OVER");  	//Satvik: Check this. The characters get scattered if banner is used...Don't know how to fix this. :-(
+			cout<<"Lives: "<<"\t\t Time : "<<global_time<<"\t\tScore : "<<(total_of_dots - present_count_of_dots)<<" (a lot of bonus included)"<<endl;
+			cout<<"Press any key to continue...";
+			fflush(stdin);
+			cin.get();
+			cin.get();
+			system("clear;banner play again ?");
+			int ch;
+			cout<<"Enter 1-yes or 0-No"<<endl;
+			cin>>ch;
+			if(ch)
+			{
+				clrscr();
+				global_time = 0;
+				total_of_dots = present_count_of_dots = 0;
+				ifstream levelfile(level_filename.c_str());
+				this->initGrid(levelfile);
+				signal(SIGALRM, handleAlarmSignal);
+				this->StartTheGame();
 
-			cout << "GAME OVER...Press Ctrl+C to continue" << endl;
-			fflush(stdout);		//Otherwise the previous message will be buffered until a signal is received.
-			//system("clear;banner GAME OVER");  	//Satvik: Check this. The characters get scattered if banner is used...Don't know how to fix this. :-(
-			pause();
-			exit(2);		//2 means GAME_OVER...Can be used later.
+			}
+			else
+			{
+				//pause();
+				system("clear;banner Thank you");
+				sleep(3);
+				system("banner a code kshetra product");
+				sleep(5);
+				exit(2);		//2 means GAME_OVER...Can be used later.
+				//signal(SIGALRM, handleAlarmSignal);
+			}
 		}	
 
 	//pacman.toString();
@@ -361,7 +393,7 @@ void handleInterruptSignal(int signo)
 	LOG("//Code to pause the game or hang pacman and the ghosts");
 	system("stty -raw echo");
 	LOG("The terminal in normal echo mode!");
-	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<"\t\tScore : "<<(total_of_dots - present_count_of_dots)<<" (a lot of bonus included)"<<endl;
+	cout<<"Lives: "<<"\t\t Time : "<<global_time<<"\t\tScore : "<<(total_of_dots - present_count_of_dots)<<" (a lot of bonus included)"<<endl;
 	cout<<"Interrupt Recieved!\n";
 	cout<<"Do you Want to End the game[1-yes, 0-no]\n";
 	cin>>i;
