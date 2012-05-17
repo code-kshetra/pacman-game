@@ -24,8 +24,12 @@ using namespace std;
 int main()
 {
 	//Grid grid("simple_level0.txt");
-
-	cout << "Select level (Enter number): " << endl;
+	system("clear; banner level");
+	cout<<"1-Beginner Level"<<endl;
+	cout<<"2-Advanced Level"<<endl;
+	cout<<"3-Today's Special"<<endl;
+	cout<<"4-Code Kshetra's Special"<<endl;
+	cout << "Select level [1-4]: " << endl;
 	int n;
 	cin >> n;
 
@@ -38,7 +42,9 @@ int main()
 			break;
 		case 3: level = "new_level.txt";
 			break;
-		default: level = "new_level.txt";
+		case 4: level = "special_level.txt";
+			break;
+		default: level = "special_level.txt";
 	}
 	
 

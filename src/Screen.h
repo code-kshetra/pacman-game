@@ -90,7 +90,7 @@ Screen::~Screen()
 int Screen::displayOptionsWindow()
 {
 	LOG(__func__);
-	system("clear;banner pacman");
+	system("clear; banner pacman");
 	//system("tput cup 200 200");
 	cout<<"Welcome to the Terminal Pacman Game!"<<endl;
 	//system("tput cup 200 201");
@@ -209,7 +209,7 @@ void Screen::displayHighScoresWindow()
 	LOG(__func__);
 	system("clear; Pacman ");
 	cout<<"High Scores\n"<<endl;
-	cout<<"    Name \t\t Time \n";
+	cout<<"    Name \t Time \n";
 	FILE *fp;
 	char player_name[20];
 	float score;
