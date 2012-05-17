@@ -75,7 +75,9 @@ private:
 
 	//These 2 variables are used to keep track of the game's characters
 	Pacman pacman;
-	Ghost ghosts[4];
+	Ghost ghosts[100];		//Maximum of 100 Ghosts
+	
+	int numGhost;			//Counts the current number of ghosts
 
 
 
@@ -156,7 +158,7 @@ Grid::Grid(string filename)
 void Grid::initGrid(ifstream &infile)
 {
 	LOG(__func__);
-	int numGhost = 0;
+	numGhost = 0;
 	int pacRow = 0;
 	int pacCol = 0;
 
@@ -287,6 +289,7 @@ void Grid::removeCursor()
 	cout << "\033[?25l";
 }
 
+
 void Grid::addCursor()
 {
 	cout << "\033[?25h";
@@ -320,7 +323,7 @@ void Grid::modifyGrid()
 		//pacman.changeDirection((pacman.getDirection() + 1) % 4);
 	}
 	
-	for(int i=0; i<4; i++)
+	for(int i=0; i<numGhost; i++)
 		if(ghosts[i].move(squares, pacman) == GAME_OVER_FLAG)
 		{
 			signal(SIGALRM, SIG_IGN);		//To prevent refreshing of the screen.
