@@ -175,6 +175,7 @@ void Grid::initGrid(ifstream &infile)
 		{
 			switch(line[i])
 			{
+			case 'w':
 			case 'W':
 				squares[row][col] = Square(TYPE1_WALL);
 				break;
@@ -232,7 +233,7 @@ void Grid::displayGrid()
 		cout << endl;
 	}
 	player.setDotsAte(total_of_dots - present_count_of_dots); //This is necessary coz pacman eats variable no of dots
-	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<"\t\tScore : "<<(total_of_dots - present_count_of_dots)<<" (a lot of bonus included)"<<endl;
+	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<"\t\tScore : " << (total_of_dots - present_count_of_dots)<<" (a lot of bonus included)"<<endl;
 	cout<<"Press ^C to pause the game!"<<endl;
 	/*
 	pacman.toString();
@@ -271,7 +272,7 @@ void Grid::updateVisualGrid()
 	present_count_of_dots -= count_of_change;
 	player.setDotsAte(total_of_dots - present_count_of_dots); //This is necessary coz pacman eats variable no of dots
 	setCursor(32, 0);
-	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<"\t\tScore : "<<player.getDotsAte()<<endl;
+	cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<"\t\tScore : " << player.getDotsAte()<<endl;
 	//cout<<"Lives: "<<"\t\t\t\t Time : "<<global_time<<endl; //Samir figure out a way to update the scores here we need to print these lines
 	//cout<<"Press ^C to pause the game!"<<endl;
 }
@@ -293,6 +294,7 @@ void Grid::addCursor()
 
 void Grid::setCursor(int x, int y)
 {
+
 	cout <<	"\033[" << x+1 << ";" << y+1 << "H";
 }
 
@@ -321,8 +323,18 @@ void Grid::modifyGrid()
 	for(int i=0; i<4; i++)
 		if(ghosts[i].move(squares, pacman) == GAME_OVER_FLAG)
 		{
-			//cout << "Ghost " << i << " ate Pacman...NOT Exiting...Continuing";
-			//exit(0);		//Handle this properly later..Go back to main menu.
+			signal(SIGALRM, SIG_IGN);		//To prevent refreshing of the screen.
+			sleep(1);
+			clrscr();
+			addCursor();
+			cout << endl;
+			system("clear");			//All this was done because of some video camera issues.
+
+			cout << "GAME OVER...Press Ctrl+C to continue" << endl;
+			fflush(stdout);		//Otherwise the previous message will be buffered until a signal is received.
+			//system("clear;banner GAME OVER");  	//Satvik: Check this. The characters get scattered if banner is used...Don't know how to fix this. :-(
+			pause();
+			exit(2);		//2 means GAME_OVER...Can be used later.
 		}	
 
 	//pacman.toString();

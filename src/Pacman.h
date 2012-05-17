@@ -31,6 +31,8 @@ private:
 	int direction;		//One of the four DIR_xxx constants
 	int moveTimer;			//This is to ensure that the speed of the ghost < speed of Pacman
 
+	int numDotsEaten;	//Make pacman count what it is eating.
+
 public:
 	Pacman(){}
 	Pacman(int row, int col, int dir);	//This constructor is called, when the game screen is initialized for the first time.
@@ -55,6 +57,9 @@ public:
   	 */
 	int move(Square squares[NUM_ROWS][NUM_COLS]);		
 
+	//This method returns the number of dots Pacman has eaten till now
+	int getNumDotsEaten();
+
 	void toString();
 };
 
@@ -65,6 +70,7 @@ Pacman::Pacman(int x, int y, int dir)
 	this->direction = dir;
 
 	moveTimer = PACMAN_INVERSE_RELATIVE_SPEED;
+	numDotsEaten = 0;
 }
 
 int Pacman::getRow()
@@ -97,7 +103,9 @@ int Pacman::move(Square squares[NUM_ROWS][NUM_COLS])
 	//Reset Timer
 	moveTimer = PACMAN_INVERSE_RELATIVE_SPEED;
 
-
+	//If Pacman is over a dot, increment the number of dots eaten...Needed for the score
+	if(squares[row][col].getType1() == TYPE1_DOT)
+		numDotsEaten++;
 
 	//Pacman can only move in 'direction' if there is no Wall.
 	//So, check if there's a wall.
@@ -197,6 +205,11 @@ bool Pacman::isValidDirection(Square squares[NUM_ROWS][NUM_COLS], int dir)
 			break;
 	}	
 	return true;
+}
+
+int Pacman::getNumDotsEaten()
+{
+	return numDotsEaten;
 }
 
 #endif

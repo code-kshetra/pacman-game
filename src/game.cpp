@@ -13,12 +13,15 @@
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 */
-#include<stdlib.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
 #include "Grid.h"
 
 int main()
 {
-	Grid grid("simple_level0.txt");
+	//Grid grid("simple_level0.txt");
+	Grid grid("simple_level1.txt");
 	grid.StartTheGame();
 }
 
