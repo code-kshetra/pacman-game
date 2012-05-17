@@ -20,6 +20,17 @@
 #include <string>
 #include <iostream>
 
+#define VT_BLACK    '0'
+#define VT_RED      '1'
+#define VT_GREEN    '2'
+#define VT_YELLOW   '3'
+#define VT_BLUE     '4'
+#define VT_MAGENTA  '5'
+#define VT_CYAN     '6'
+#define VT_WHITE    '7'
+#define VT_DEFAULT  '9'
+
+
 using namespace std;
 
 /*
@@ -38,7 +49,10 @@ private:
 
 
 	void displayType(int type);
-	
+
+	//These two methods are used to change the text color of the terminal using VT100 escape sequences, where color is one of the VT_xxx constants defined above
+	void setColor(char color);
+	void resetColor();
 
 public:
 	
@@ -136,18 +150,22 @@ void Square::displayType(int type)
 	switch(type)
 	{
 	case TYPE1_DOT: 
+		setColor(VT_BLUE);
 		cout << '.';
 		break;
 	case TYPE1_WALL:
+		setColor(VT_GREEN);
 		cout << 'W';
 		break;
 	case TYPE1_POWERPOINT:
 		cout << '%';
 		break;
 	case TYPE2_PACMAN:
+		setColor(VT_YELLOW);
 		cout << 'C';
 		break;
 	case TYPE2_GHOST:
+		setColor(VT_WHITE);
 		cout << '@';
 		break;
 	case TYPE_BLANK:
@@ -156,6 +174,18 @@ void Square::displayType(int type)
 	default:
 		cout << '?';
 	}
+
+	resetColor();
 //	cout<<' '; //a space to look neat!		-- The Cause of a BUG!  I'll give you 100 bugs for finding this BUG :-)
+}
+
+void Square::setColor(char color)
+{
+	cout << "\033[01;3" << color << "m";
+}
+
+void Square::resetColor()
+{
+	cout << "\033[0m";
 }
 #endif
