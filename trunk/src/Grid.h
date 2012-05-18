@@ -136,7 +136,7 @@ void Grid::Player_Details::WriteDataToHighScoreFile()
 {
 	FILE *fp;
 	fp=fopen("score.txt","a");
-	fprintf(fp,"%s %f %d \n", (this->name).c_str(), global_time, total_of_dots - present_count_of_dots);
+	fprintf(fp,"%s\t%f\t%d \n", (this->name).c_str(), global_time, total_of_dots - present_count_of_dots);
 	fclose(fp);
 }	
 
@@ -226,7 +226,7 @@ void Grid::displayGrid()
 	{
 		for(int j=0; j<NUM_COLS; j++)
 		{
-			setCursor(i, j);
+			setCursor(i, 2 * j);
 			if(squares[i][j].getType2() != TYPE_BLANK)
 			{
 				squares[i][j].displayType2();
@@ -260,18 +260,21 @@ void Grid::updateVisualGrid()
 		{
 			if(squares[i][j].isChanged())
 			{
-				setCursor(i, j);
+				setCursor(i, 2 * j);
 
 				if(squares[i][j].getType2() != TYPE_BLANK)
 				{
 					squares[i][j].displayType2();
+					if(squares[i][j].getType2() == TYPE2_PACMAN && 
+							squares[i][j].getType1() == TYPE1_DOT)
+						count_of_change++;
 				}
 				else
 				{
 					squares[i][j].displayType1();
 				}
 				squares[i][j].resetChanged();
-				++count_of_change; // I need to put this here and count only those . changed to spaces .. Samir find out. I'm confused with these type1,type2 :P
+				//++count_of_change; // I need to put this here and count only those . changed to spaces .. Samir find out. I'm confused with these type1,type2 :P
 			}
 		}
 	}
@@ -330,7 +333,8 @@ void Grid::modifyGrid()
 	for(int i=0; i<numGhost; i++)
 		if(ghosts[i].move(squares, pacman) == GAME_OVER_FLAG)
 		{
-			signal(SIGALRM, SIG_IGN);		//To prevent refreshing of the screen.
+			signal(SIGALRM, SIG_DFL);		//To prevent refreshing of the screen.
+			player.WriteDataToHighScoreFile();
 			sleep(1);
 			clrscr();
 			addCursor();
@@ -356,7 +360,7 @@ void Grid::modifyGrid()
 				total_of_dots = present_count_of_dots = 0;
 				ifstream levelfile(level_filename.c_str());
 				this->initGrid(levelfile);
-				signal(SIGALRM, handleAlarmSignal);
+				//signal(SIGALRM, handleAlarmSignal);
 				this->StartTheGame();
 
 			}
