@@ -1,3 +1,5 @@
-vaishakh 114.0
-satvik 98.0
-samir 93.0
+vaishakh	114.0
+satvik		95.0
+samir 		93.0
+Samir 		19.080057	72 
+ah	17.880030	148 
