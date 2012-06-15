@@ -4,12 +4,12 @@ Instruction to build the game.
 = Introduction =
 To build this game, please follow the instructions given below.
 = Details =
-1) Download the source code. All the source files are in ..pacman-game/src/ folder.
-2)Change the current directory to the src. [$cd pacman-game/src/ ]
-3) Run the following commands in order
-   $touch game.cpp
-   $make game
-   $c++ pacman_game.cpp
+* Download the source code. All the source files are in ..pacman-game/src/ folder.
+*Change the current directory to the src. [$cd pacman-game/src/ ]
+* Run the following commands in order
+   # $touch game.cpp
+   # $make game
+   # $c++ pacman_game.cpp
 
-4)Once all the compilation is done. Run a.out to start the game.
-   $./a.out
+* Once all the compilation is done. Run a.out to start the game.
+   # $./a.out
